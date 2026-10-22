@@ -35,7 +35,30 @@ import Data.Char (isAlphaNum, isDigit, toLower, digitToInt)
 
 -- A1
 esPalindromo :: String -> Bool
-esPalindromo = undefined
+esPalindromo s = sonIguales limpia (invertir limpia)
+  where
+    limpia = limpiarCadena s
+
+-- Filtra caracteres no alfanuméricos y convierte a minúsculas de forma recursiva
+limpiarCadena :: String -> String
+limpiarCadena [] = []
+limpiarCadena (c:cs)
+  | isAlphaNum c = toLower c : limpiarCadena cs
+  | otherwise    = limpiarCadena cs
+
+-- Invierte una lista en un solo recorrido acumulando en O(n)
+invertir :: [a] -> [a]
+invertir xs = revAcc xs []
+  where
+    revAcc :: [a] -> [a] -> [a]
+    revAcc [] acc     = acc
+    revAcc (y:ys) acc = revAcc ys (y:acc)
+
+-- Compara dos listas elemento a elemento recursivamente
+sonIguales :: Eq a => [a] -> [a] -> Bool
+sonIguales [] []         = True
+sonIguales (x:xs) (y:ys) = x == y && sonIguales xs ys
+sonIguales _ _           = False
 
 -- A2
 -- Explica aquí, en dos o tres líneas, por qué tu solución recorre la
