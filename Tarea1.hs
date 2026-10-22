@@ -63,9 +63,20 @@ sonIguales _ _           = False
 -- A2
 -- Explica aquí, en dos o tres líneas, por qué tu solución recorre la
 -- lista una sola vez:
---
+-- La función auxiliar 'buscarExtremos' recorre la lista mediante recursión
+-- estructural sobre la cola en una única pasada lineal O(n), manteniendo y
+-- actualizando los valores (actualMax, actualMin) hasta alcanzar el caso base.
 mayorYMenor :: Ord a => [a] -> Maybe (a, a)
-mayorYMenor = undefined
+mayorYMenor []     = Nothing
+mayorYMenor (x:xs) = Just (buscarExtremos xs x x)
+
+buscarExtremos :: Ord a => [a] -> a -> a -> (a, a)
+buscarExtremos [] actualMax actualMin = (actualMax, actualMin)
+buscarExtremos (y:ys) actualMax actualMin =
+  buscarExtremos ys nuevoMax nuevoMin
+  where
+    nuevoMax = if y > actualMax then y else actualMax
+    nuevoMin = if y < actualMin then y else actualMin
 
 -- A3
 leerHora :: String -> Either String (Int, Int)
